@@ -10,15 +10,28 @@
 
 //on load
   //check the selection item in localStorage
-    //if it is blank
-      //display la habra by default
+  //if it is blank
+    //display la habra by default
+var citySelected = localStorage.getItem("citySelected") || "La Habra";
+
+//slecting the current weather article
+var currentWeather = document.querySelector("#currentWeather");
+//selecting all the children of current weather
+var currentWeatherChildren = currentWeather.children;
+
+
+
     //if it is populated
       //fill in all information in the current day section
       //fill in the 5-day forcast
 
 
+
 //populate current day function
   //set 1st row inner text to {city name}{(date)}{weather emoji}
+function populateCurrentDay() {
+  // currentWeatherChildren[0].textContent =
+}
   //set second row innner text to Temp: {temp}
   //set third row inner text to Wind: {wind}
   //set fourth row to Humidity: {humidity}
