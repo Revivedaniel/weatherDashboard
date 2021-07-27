@@ -18,6 +18,8 @@ var citySelected = localStorage.getItem("citySelected") || "La Habra";
 var currentWeather = document.querySelector("#currentWeather");
 //selecting all the children of current weather
 var currentWeatherChildren = currentWeather.children;
+//Selecting the search area
+var searchCityEl = document.querySelector("#searchCity");
 
 
 
