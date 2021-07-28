@@ -1,21 +1,5 @@
 //initializing local storage
 var listOfCities = {}
-//validating if there is an item in local storage with the key listOfCities
-if (localStorage.getItem("listOfCities")) {
-  //set the listOfCities variable to the value from local storage
-  listOfCities = JSON.parse(localStorage.getItem("listOfCities"));
-  //set the city selected item in local storage to the first city in listOfCities' locationName
-  localStorage.setItem("citySelected", listOfCities[0].locationName)
-} else {
-  listOfCities = {
-    LaHabra: {
-      locationName: "LaHabra",
-      lat: 33.9318591,
-      lng: -117.946137
-    }
-  }
-  localStorage.setItem("listOfCities", JSON.stringify(listOfCities))
-}
 //variable for city selected
 var citySelected = localStorage.getItem("citySelected");
 //slecting the current weather article
@@ -27,57 +11,118 @@ var searchCityEl = document.querySelector("#searchCity");
 //submit button
 var submitBtnEl = document.querySelector("#submitButton")
 //begining of api
-const beginAPI = "https://maps.googleapis.com/maps/api/geocode/json?"
+const beginAPI = "https://maps.googleapis.com/maps/api/geocode/json?address="
 const apiKey = "&key=AIzaSyAjHWedDwUnS1H21XfbW-e388yuURcoWU0"
-
+//initializing lat and lng object
 var latLng = {
   lat: 0,
   lng: 0,
 }
+
+function callGeolocation() {
+  //fetching the response
+  fetch(beginAPI + searchCityEl.value.replace(/\s+/g, "") + apiKey)
+  .then(function(response) {
+    if (response.status === 200) {
+      //for in for listOfCities listing the name of each city
+      for (const property in listOfCities) {
+        //initializing empty citiesArray
+        var citiesArray = [];
+        //pushing each city name into the array
+        citiesArray.push(listOfCities[property].locationName)
+      }
+      //find the name of the value of the search in the array
+      var locationAlreadySelected = citiesArray.find(isLocationSelected)
+      var locationAlreadySelectedIndex = citiesArray.findIndex(isLocationSelected)
+      
+      //if the curl is successful and there isnt an entry in the local storage for that city
+      //if the curl is successful and there is an entry already
+      if (locationAlreadySelected) {
+        //change citySelected to the city
+        updateCitySelected(locationAlreadySelected)
+        //change latLng to lat and lng of city in object
+        updateLatLng(listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lat, listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lng)
+        //update current weather
+        //update 5-day forecast
+      }
+      
+      return response.json();
+      }
+    })
+    //change selection and create a new list item
+    .then(function(data) {
+      //update latLng
+      updateLatLng(data.results[0].geometry.location.lat, latLng.lng = data.results[0].geometry.location.lng);
+      //update citySelected
+      updateCitySelected(data.results[0].address_components[0].long_name);
+      //update current weather
+      //update 5-day forecast
+    })
+}
+//function to find search value in listOfCities
+function isLocationSelected(location) {
+  return location == searchCityEl.value.replace(/\s+/g, "");
+}
+//function to update the city selected on both variable and localStorage levels
+function updateCitySelected(newSelection) {
+  citySelected = newSelection;
+  localStorage.setItem("citySelected", newSelection)
+}
+//function to update lat and lng for latLng
+function updateLatLng(lat, lng) {
+  latLng.lat = lat
+  latLng.lng = lng
+}
+
+//on load
+//validating if there is an item in local storage with the key listOfCities
+if (localStorage.getItem("listOfCities")) {
+  //set the listOfCities variable to the value from local storage
+  listOfCities = JSON.parse(localStorage.getItem("listOfCities"));
+  //set the city selected item in local storage to the first city in listOfCities' locationName
+  localStorage.setItem("citySelected", listOfCities.city1.locationName)
+
+  citySelected = localStorage.getItem("citySelected");
+} else {
+  //set listOfCities to lahabra by default since there are no values already
+  listOfCities = {
+    city1: {
+      locationName: "LaHabra",
+      lat: 33.9318591,
+      lng: -117.946137
+    }
+  }
+  //writing listOfCities object to local storage
+  localStorage.setItem("listOfCities", JSON.stringify(listOfCities));
+  localStorage.setItem("citySelected", "LaHabra");
+  //setting citySelected to the calue in local storage
+  citySelected = "LaHabra";
+  
+}
+//setting latLng to first city
+latLng.lat = listOfCities.city1.lat;
+latLng.lng = listOfCities.city1.lng;
+
+
 
 //when the search button is pressed
 submitBtnEl.addEventListener("click", function(event) {
   //prevent default
   event.preventDefault();
   //search the value in geocode api
-
+  callGeolocation()
+  
 })
-  //search the value in the weather api
-      //set a selection item in localStorage to the city
-      //add a item to the local storage array
-      //create a new li at the bottom
-    //if the curl is successful but there is already a city that name
-      //set a selection item in localStorage to the city
+//search the value in the weather api
+//set a selection item in localStorage to the city
+//add a item to the local storage array
+//create a new li at the bottom
+//if the curl is successful but there is already a city that name
+//set a selection item in localStorage to the city
 
-//on load
-  //check the selection item in localStorage
-  //if it is blank
-    //set to La Habra as default
-if (!localStorage.getItem("citySelected")) {
-  localStorage.setItem("citySelected", "LaHabra");
-  citySelected = "LaHabra"
-}
+//fill in all information in the current day section
+//fill in the 5-day forcast
 
-      //fill in all information in the current day section
-      //fill in the 5-day forcast
-
-function callGeolocation() {
-  fetch(beginAPI + searchCityEl.value.replace(/\s+/g, '') + apiKey)
-    .then(function(response) {
-      if (response === 200) {
-        //if the curl is successful and there isnt an entry in the local storage for that city
-        if (condition) {
-          
-        }
-
-      }
-      return response.json();
-    })
-    .then(function(data) {
-      latLng.lat = data.geometry.location.lat;
-      latLng.lng = data.geometry.location.lng;
-    })
-}
 
 
 //populate current day function
