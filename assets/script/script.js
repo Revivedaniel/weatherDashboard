@@ -10,7 +10,7 @@ var currentWeatherChildren = currentWeather.children;
 var searchCityEl = document.querySelector("#searchCity");
 //submit button
 var submitBtnEl = document.querySelector("#submitButton")
-//begining of api
+//begining of google api
 const beginAPI = "https://maps.googleapis.com/maps/api/geocode/json?address="
 const apiKey = "&key=AIzaSyAjHWedDwUnS1H21XfbW-e388yuURcoWU0"
 //initializing lat and lng object
@@ -18,6 +18,9 @@ var latLng = {
   lat: 0,
   lng: 0,
 }
+//begining of weather api
+var beginWeatherAPI = "api.openweathermap.org/data/2.5/weather?"
+var weatherAPIKey = "&appid=b76f140a1fcf09aa9a8a1bd98e79a29f"
 
 function callGeolocation() {
   //fetching the response
@@ -29,7 +32,7 @@ function callGeolocation() {
         //initializing empty citiesArray
         var citiesArray = [];
         //pushing each city name into the array
-        citiesArray.push(listOfCities[property].locationName)
+        citiesArray.push(listOfCities[property].locationName);
       }
       //find the name of the value of the search in the array
       var locationAlreadySelected = citiesArray.find(isLocationSelected)
@@ -39,9 +42,9 @@ function callGeolocation() {
       //if the curl is successful and there is an entry already
       if (locationAlreadySelected) {
         //change citySelected to the city
-        updateCitySelected(locationAlreadySelected)
+        updateCitySelected(locationAlreadySelected);
         //change latLng to lat and lng of city in object
-        updateLatLng(listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lat, listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lng)
+        updateLatLng(listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lat, listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lng);
         //update current weather
         //update 5-day forecast
       }
@@ -66,12 +69,23 @@ function isLocationSelected(location) {
 //function to update the city selected on both variable and localStorage levels
 function updateCitySelected(newSelection) {
   citySelected = newSelection;
-  localStorage.setItem("citySelected", newSelection)
+  localStorage.setItem("citySelected", newSelection);
 }
 //function to update lat and lng for latLng
 function updateLatLng(lat, lng) {
-  latLng.lat = lat
-  latLng.lng = lng
+  latLng.lat = lat;
+  latLng.lng = lng;
+}
+
+//Weather Api call function
+function callWeatherAPI() {
+  fetch(beginWeatherAPI+"lat="+latLng.lat+"&lon="+latLng.lng+weatherAPIKey)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    console.log(data)
+  })
 }
 
 //on load
@@ -110,10 +124,14 @@ submitBtnEl.addEventListener("click", function(event) {
   //prevent default
   event.preventDefault();
   //search the value in geocode api
-  callGeolocation()
+  callGeolocation();
+  //search the value in the weather api
+  callWeatherAPI();
+
   
 })
-//search the value in the weather api
+
+
 //set a selection item in localStorage to the city
 //add a item to the local storage array
 //create a new li at the bottom
