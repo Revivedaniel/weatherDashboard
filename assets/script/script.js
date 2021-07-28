@@ -3,9 +3,9 @@ var listOfCities = {}
 //variable for city selected
 var citySelected = localStorage.getItem("citySelected");
 //slecting the current weather article
-var currentWeather = document.querySelector("#currentWeather");
+var currentWeatherEl = document.querySelector("#currentWeather");
 //selecting all the children of current weather
-var currentWeatherChildren = currentWeather.children;
+var currentWeatherChildren = currentWeatherEl.children;
 //Selecting the search area
 var searchCityEl = document.querySelector("#searchCity");
 //submit button
@@ -18,9 +18,62 @@ var latLng = {
   lat: 0,
   lng: 0,
 }
+//initializing current weather object
+var currentWeather = {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+}
+//initializing 5-day forecast object
+var fiveDayForecast = {
+  0: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
+  1: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
+  2: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
+  3: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
+  4: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
+}
+
 //begining of weather api
-var beginWeatherAPI = "api.openweathermap.org/data/2.5/weather?"
-var weatherAPIKey = "&appid=b76f140a1fcf09aa9a8a1bd98e79a29f"
+var beginWeatherAPI = "https://api.openweathermap.org/data/2.5/onecall?"
+var weatherAPIKey = "&units=imperial&appid=b76f140a1fcf09aa9a8a1bd98e79a29f"
 
 function callGeolocation() {
   //fetching the response
