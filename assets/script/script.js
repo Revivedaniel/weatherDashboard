@@ -71,6 +71,14 @@ var fiveDayForecast = {
   humidity: 0,
   uvIndex: 0,
   },
+  5: {
+  locationName: "",
+  date: "",
+  temp: 0,
+  wind: 0,
+  humidity: 0,
+  uvIndex: 0,
+  },
 }
 
 //begining of weather api
@@ -139,7 +147,6 @@ function callWeatherAPI() {
     return response.json();
   })
   .then(function(data) {
-    console.log(data)
     //update current weather
     updateCurrentWeather(data)
     //update 5-day forecast
@@ -184,13 +191,16 @@ function updateFiveDay(data) {
       element.locationName = citySelected
       console.log(newFiveDay)
       //date
-      var newDate = new Date(newFiveDay.dt*1000)
-      var formattedDate = newDate.getMonth()
-      console.log(formattedDate)
+      element.date = moment.utc(newFiveDay.dt * 1000).format("M/D/YYYY")
       //temp
+      element.temp = newFiveDay.temp.day;
       //wind
+      element.wind = newFiveDay.wind_speed
       //humidity
+      element.humidity = newFiveDay.humidity
       //uvi
+      element.uvIndex = newFiveDay.uvi
+      console.log(element)
 
     }
   }
@@ -235,7 +245,7 @@ submitBtnEl.addEventListener("click", function(event) {
   callGeolocation();
   //search the value in the weather api
   callWeatherAPI();
-
+  //update dom 5-day with new data
   
 })
 
