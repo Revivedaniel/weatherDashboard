@@ -161,7 +161,16 @@ function updateCurrentWeather(data) {
   //uvIndex
   currentWeather.uvIndex = newCurrentWeather.uvi
 
-  //
+  //update #currentWeatherDate
+  currentWeatherEl.querySelector("#currentWeatherDate").textContent = currentWeather.locationName + " " + currentWeather.date
+  //update #currentWeatherTemp
+  currentWeatherEl.querySelector("#currentWeatherTemp").innerHTML = "Temp: " + currentWeather.temp + "&deg; F"
+  //update #currentWeatherWind
+  currentWeatherEl.querySelector("#currentWeatherWind").textContent = "Wind: " + currentWeather.wind + " MPH"
+  //update #currentWeatherHumidity
+  currentWeatherEl.querySelector("#currentWeatherHumidity").innerHTML = "Humidity: " + currentWeather.humidity + "&percnt;"
+  //update #currentWeatherUV
+  currentWeatherEl.querySelector("#currentWeatherUV").textContent = "UVIndex: " + currentWeather.uvIndex
 }
 
 //on load
