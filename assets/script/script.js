@@ -8,6 +8,9 @@ var citySelected = localStorage.getItem("citySelected");
 var currentWeatherEl = document.querySelector("#currentWeather");
 //selecting all the children of current weather
 var currentWeatherChildren = currentWeatherEl.children;
+//selecting all the articles for 5-day
+var fiveDayForecastEl = document.querySelectorAll(".forecastEntry")
+console.log(fiveDayForecastEl)
 //Selecting the search area
 var searchCityEl = document.querySelector("#searchCity");
 //submit button
@@ -23,6 +26,7 @@ var latLng = {
 //initializing current weather object
 var currentWeather = {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -33,6 +37,7 @@ var currentWeather = {
 var fiveDayForecast = {
   0: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -41,6 +46,7 @@ var fiveDayForecast = {
   },
   1: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -49,6 +55,7 @@ var fiveDayForecast = {
   },
   2: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -57,6 +64,7 @@ var fiveDayForecast = {
   },
   3: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -65,6 +73,7 @@ var fiveDayForecast = {
   },
   4: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -73,6 +82,7 @@ var fiveDayForecast = {
   },
   5: {
   locationName: "",
+  emoji:"",
   date: "",
   temp: 0,
   wind: 0,
@@ -150,7 +160,7 @@ function callWeatherAPI() {
     //update current weather
     updateCurrentWeather(data)
     //update 5-day forecast
-    updateFiveDay(data)
+    updateFiveDayData(data)
   })
 }
 
@@ -181,7 +191,7 @@ function updateCurrentWeather(data) {
   currentWeatherEl.querySelector("#currentWeatherUV").textContent = "UVIndex: " + currentWeather.uvIndex
 }
 
-function updateFiveDay(data) {
+function updateFiveDayData(data) {
   //for in to update each entry in 5-day object
   for (const key in fiveDayForecast) {
     if (Object.hasOwnProperty.call(fiveDayForecast, key)) {
@@ -204,6 +214,24 @@ function updateFiveDay(data) {
 
     }
   }
+}
+
+function updateFiveDayDom() {
+  //for loop to select articles
+  for (let i = 0; i < fiveDayForecastEl.length; i++) {
+    const element = fiveDayForecastEl[i];
+    const newI = i + 1
+    //update forecastDate
+    element.querySelector(".forecastDate").textContent = fiveDayForecast[newI].date;
+    //update forecastEmoji
+    element.querySelector(".forecastEmoji").innerHTML = five
+    //update forecastTemp
+    //update forecastWind
+    //update forecastHumidity
+
+    
+  }
+
 }
 
 //on load
