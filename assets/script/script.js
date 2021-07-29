@@ -1,3 +1,5 @@
+//moment js
+var today = moment()
 //initializing local storage
 var listOfCities = {}
 //variable for city selected
@@ -138,7 +140,28 @@ function callWeatherAPI() {
   })
   .then(function(data) {
     console.log(data)
+    //update current weather
+    updateCurrentWeather(data)
+    //update 5-day forecast
   })
+}
+
+function updateCurrentWeather(data) {
+  const newCurrentWeather = data.current
+  //location name
+  currentWeather.locationName = citySelected
+  //date
+  currentWeather.date = today.utcOffset(data.timezone_offset).format("M/D/YYYY")
+  //temp
+  currentWeather.temp = newCurrentWeather.temp
+  //wind
+  currentWeather.wind = newCurrentWeather.wind_speed
+  //humidity
+  currentWeather.humidity = newCurrentWeather.humidity
+  //uvIndex
+  currentWeather.uvIndex = newCurrentWeather.uvi
+
+  //
 }
 
 //on load
