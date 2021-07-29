@@ -182,8 +182,11 @@ function updateFiveDay(data) {
       const newFiveDay = data.daily[key]
       //setting the name
       element.locationName = citySelected
+      console.log(newFiveDay)
       //date
-      element.date = newFiveDay.temp.day
+      var newDate = new Date(newFiveDay.dt*1000)
+      var formattedDate = newDate.getMonth()
+      console.log(formattedDate)
       //temp
       //wind
       //humidity
