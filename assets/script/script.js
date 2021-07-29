@@ -143,6 +143,7 @@ function callWeatherAPI() {
     //update current weather
     updateCurrentWeather(data)
     //update 5-day forecast
+    updateFiveDay(data)
   })
 }
 
@@ -171,6 +172,25 @@ function updateCurrentWeather(data) {
   currentWeatherEl.querySelector("#currentWeatherHumidity").innerHTML = "Humidity: " + currentWeather.humidity + "&percnt;"
   //update #currentWeatherUV
   currentWeatherEl.querySelector("#currentWeatherUV").textContent = "UVIndex: " + currentWeather.uvIndex
+}
+
+function updateFiveDay(data) {
+  //for in to update each entry in 5-day object
+  for (const key in fiveDayForecast) {
+    if (Object.hasOwnProperty.call(fiveDayForecast, key)) {
+      const element = fiveDayForecast[key];
+      const newFiveDay = data.daily[key]
+      //setting the name
+      element.locationName = citySelected
+      //date
+      element.date = newFiveDay.temp.day
+      //temp
+      //wind
+      //humidity
+      //uvi
+
+    }
+  }
 }
 
 //on load
