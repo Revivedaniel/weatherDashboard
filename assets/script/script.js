@@ -180,6 +180,8 @@ function updateCurrentWeather(data) {
   currentWeather.humidity = newCurrentWeather.humidity
   //uvIndex
   currentWeather.uvIndex = newCurrentWeather.uvi
+  //emoji
+  currentWeather.emoji = newCurrentWeather.weather[0].icon
 
   //update #currentWeatherDate
   currentWeatherEl.querySelector("#currentWeatherDate").textContent = currentWeather.locationName + " " + currentWeather.date
@@ -191,6 +193,8 @@ function updateCurrentWeather(data) {
   currentWeatherEl.querySelector("#currentWeatherHumidity").innerHTML = "Humidity: " + currentWeather.humidity + "&percnt;"
   //update #currentWeatherUV
   currentWeatherEl.querySelector("#currentWeatherUV").textContent = "UVIndex: " + currentWeather.uvIndex
+  //update #currentWeatherIcon
+  currentWeatherEl.querySelector("#currentWeatherIcon").src = "http://openweathermap.org/img/wn/" + currentWeather.emoji + "@2x.png"
 }
 
 function updateFiveDayData(data) {
