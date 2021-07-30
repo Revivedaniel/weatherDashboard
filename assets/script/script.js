@@ -263,6 +263,27 @@ function createNewListItem(name, lat, lng) {
   newLi.textContent = name
   //append to ul
   citiesListEl.appendChild(newLi)
+  //update local storage
+  addCityToLocalStorage(newLi)
+}
+
+function addCityToLocalStorage(newLi) {
+  //var for location name
+  var newLocationName = newLi.dataset.locationname;
+  //var for lat
+  var newLat = newLi.dataset.lat;
+  //var for lng
+  var newLng = newLi.dataset.lng;
+  //index for new object entry
+  var newIndex = Object.keys(listOfCities).length
+
+  var newObject = {locationName: newLocationName, lat: newLat, lng: newLng,}
+
+  //update listOfCities
+  listOfCities[newIndex] = newObject;
+  //set it to local storage
+  localStorage.setItem("listOfCities", JSON.stringify(listOfCities))
+
 }
 
 //on load
