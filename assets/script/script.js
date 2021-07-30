@@ -98,53 +98,47 @@ var beginWeatherAPI = "https://api.openweathermap.org/data/2.5/onecall?"
 var weatherAPIKey = "&units=imperial&appid=b76f140a1fcf09aa9a8a1bd98e79a29f"
 
 function callGeolocation() {
-  //for in for listOfCities listing the name of each city
-  for (const property in listOfCities) {
-    //initializing empty citiesArray
-    var citiesArray = [];
-    //pushing each city name into the array
-    citiesArray.push(listOfCities[property].locationName);
-  }
-  //find the name of the value of the search in the array
-  var locationAlreadySelected = citiesArray.find(isLocationSelected)
-  var locationAlreadySelectedIndex = citiesArray.findIndex(isLocationSelected)
-  
-  //if the curl is successful and there isnt an entry in the local storage for that city
-  if (!locationAlreadySelected) {
-    //update citySelected
-    updateCitySelected(searchCityEl.value.replace(/\s+/g, ""))
-    
-  }
-  //if the curl is successful and there is an entry already
-  if (locationAlreadySelected) {
-    //change citySelected to the city
-    updateCitySelected(locationAlreadySelected);
-    //change latLng to lat and lng of city in object
-    updateLatLng(listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lat, listOfCities[Object.keys(listOfCities)[locationAlreadySelectedIndex]].lng);
-    return
-  }
   //fetching the response
   fetch(beginAPI + searchCityEl.value.replace(/\s+/g, "") + apiKey)
   .then(function(response) {
     if (response.status === 200) {
       
       return response.json();
-      }
-    })
-    //change selection and create a new list item
-    .then(function(data) {
-      //update latLng
-      updateLatLng(data.results[0].geometry.location.lat, latLng.lng = data.results[0].geometry.location.lng);
-      //update citySelected
-      updateCitySelected(data.results[0].address_components[0].long_name);
+    }
+  })
+  //change selection and create a new list item
+  .then(function(data) {
+    //update latLng
+    updateLatLng(data.results[0].geometry.location.lat, latLng.lng = data.results[0].geometry.location.lng);
+    //update citySelected
+    updateCitySelected(data.results[0].address_components[0].long_name);
+
+    //for in for listOfCities listing the name of each city
+    for (const property in listOfCities) {
+      //initializing empty citiesArray
+      var citiesArray = [];
+      //pushing each city name into the array
+      citiesArray.push(listOfCities[property].locationName);
+    }
+    //find the name of the value of the search in the array
+    var locationAlreadySelected = citiesArray.find(isLocationSelected)
+    
+    //if the curl is successful and there is an entry already
+    if (locationAlreadySelected) {
+      return
+    } else {
       //add new li
-      createNewListItem(citySelected, latLng.lat, latLng.lng)
+      var newLi = createNewListItem(citySelected, latLng.lat, latLng.lng)
+  
+      addCityToLocalStorage(newLi)
+
+    }
 
     })
 }
 //function to find search value in listOfCities
 function isLocationSelected(location) {
-  return location == searchCityEl.value.replace(/\s+/g, "");
+  return location == citySelected;
 }
 //function to update the city selected on both variable and localStorage levels
 function updateCitySelected(newSelection) {
@@ -263,8 +257,7 @@ function createNewListItem(name, lat, lng) {
   newLi.textContent = name
   //append to ul
   citiesListEl.appendChild(newLi)
-  //update local storage
-  addCityToLocalStorage(newLi)
+  return newLi
 }
 
 function addCityToLocalStorage(newLi) {
@@ -286,6 +279,15 @@ function addCityToLocalStorage(newLi) {
 
 }
 
+function updateCitiesList() {
+  for (const key in listOfCities) {
+    if (Object.hasOwnProperty.call(listOfCities, key)) {
+      const element = listOfCities[key];
+      createNewListItem(element.locationName, element.lat, element.lng)
+    }
+  }
+}
+
 //on load
 //validating if there is an item in local storage with the key listOfCities
 if (localStorage.getItem("listOfCities")) {
@@ -298,6 +300,7 @@ if (localStorage.getItem("listOfCities")) {
   //call weather api
   callWeatherAPI()
   //update cities list
+  updateCitiesList()
 } else {
   //set listOfCities to lahabra by default since there are no values already
   listOfCities = {
@@ -315,6 +318,7 @@ if (localStorage.getItem("listOfCities")) {
   //call weather api
   callWeatherAPI()
   //update cities list
+  updateCitiesList()
 }
 //setting latLng to first city
 latLng.lat = listOfCities[0].lat;
