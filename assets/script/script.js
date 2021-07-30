@@ -161,6 +161,8 @@ function callWeatherAPI() {
     updateCurrentWeather(data)
     //update 5-day forecast
     updateFiveDayData(data)
+    //update dom 5-day dom
+    updateFiveDayDom();
   })
 }
 
@@ -210,7 +212,8 @@ function updateFiveDayData(data) {
       element.humidity = newFiveDay.humidity
       //uvi
       element.uvIndex = newFiveDay.uvi
-      console.log(element)
+      //emoji
+      element.emoji = newFiveDay.weather[0].icon
 
     }
   }
@@ -224,10 +227,13 @@ function updateFiveDayDom() {
     //update forecastDate
     element.querySelector(".forecastDate").textContent = fiveDayForecast[newI].date;
     //update forecastEmoji
-    element.querySelector(".forecastEmoji").innerHTML = five
+    element.querySelector(".forecastEmoji").src = "http://openweathermap.org/img/wn/" + fiveDayForecast[newI].emoji + "@2x.png"
     //update forecastTemp
+    element.querySelector(".forecastTemp").innerHTML = "Temp: " + fiveDayForecast[newI].temp + "&deg; F";
     //update forecastWind
+    element.querySelector(".forecastWind").textContent = "Wind: " + fiveDayForecast[newI].wind + " MPH"
     //update forecastHumidity
+    element.querySelector(".forecastHumidity").innerHTML = "Humidity: " + fiveDayForecast[newI].humidity + "&percnt;"
 
     
   }
@@ -273,7 +279,7 @@ submitBtnEl.addEventListener("click", function(event) {
   callGeolocation();
   //search the value in the weather api
   callWeatherAPI();
-  //update dom 5-day with new data
+  
   
 })
 
