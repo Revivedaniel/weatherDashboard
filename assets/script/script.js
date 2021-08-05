@@ -270,6 +270,8 @@ function createNewListItem(name, lat, lng) {
   newLi.setAttribute("data-lng", lng)
   //text content
   newLi.textContent = name
+  //adding class for event listener
+  newLi.classList.add("cityListItem")
   //append to ul
   citiesListEl.appendChild(newLi)
   return newLi
