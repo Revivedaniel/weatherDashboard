@@ -272,6 +272,8 @@ function createNewListItem(name, lat, lng) {
   newLi.textContent = name
   //adding class for event listener
   newLi.classList.add("cityListItem")
+  newLi.classList.add("btn")
+  newLi.classList.add("btn-primary")
   //append to ul
   citiesListEl.appendChild(newLi)
   return newLi
@@ -352,6 +354,29 @@ submitBtnEl.addEventListener("click", function(event) {
   
   
 })
+
+//selecting all cityListItems
+var cityListItems = document.querySelectorAll(".cityListItem")
+
+for (let i = 0; i < cityListItems.length; i++) {
+  const element = cityListItems[i];
+  console.log(element)
+  element.addEventListener("click", function(Event) {
+    //prevent default
+    Event.preventDefault();
+    //Setting all data from data set to variables
+    var itemLat = Event.target.dataset.lat;
+    var itemLng = Event.target.dataset.lng;
+    var itemLocationName = Event.target.dataset.locationname;
+    //updating latLng
+    updateLatLng(itemLat, itemLng);
+    //updating citySelected
+    updateCitySelected(itemLocationName)
+    //call weather api
+    callWeatherAPI()
+  })
+}
+
 
 
 //set a selection item in localStorage to the city
