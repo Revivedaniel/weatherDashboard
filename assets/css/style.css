@@ -18,3 +18,12 @@
 .forecastDate, .forecastTemp, .forecastWind, .forecastHumidity {
     color: white;
 }
+
+/*Cities list style*/
+#citiesList {
+    width: fit-content;
+}
+
+#citiesList>* {
+    margin: 2px;
+}
