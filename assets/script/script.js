@@ -183,7 +183,7 @@ function updateCurrentWeather(data) {
   currentWeather.uvIndex = newCurrentWeather.uvi
   //emoji
   currentWeather.emoji = newCurrentWeather.weather[0].icon
-
+  
   //update #currentWeatherDate
   currentWeatherEl.querySelector("#currentWeatherDate").textContent = currentWeather.locationName + " " + currentWeather.date
   //update #currentWeatherTemp
@@ -193,9 +193,24 @@ function updateCurrentWeather(data) {
   //update #currentWeatherHumidity
   currentWeatherEl.querySelector("#currentWeatherHumidity").innerHTML = "Humidity: " + currentWeather.humidity + "&percnt;"
   //update #currentWeatherUV
-  currentWeatherEl.querySelector("#currentWeatherUV").textContent = "UVIndex: " + currentWeather.uvIndex
+  var uvSpan = currentWeatherEl.querySelector("#uvSpan")
+  uvSpan.textContent = currentWeather.uvIndex
   //update #currentWeatherIcon
   currentWeatherEl.querySelector("#currentWeatherIcon").src = "http://openweathermap.org/img/wn/" + currentWeather.emoji + "@2x.png"
+  //If the uvIndex is 2 or below color the background green
+  if (currentWeather.uvIndex <= 2) {
+    uvSpan.style.backgroundColor = "#008000"
+    uvSpan.style.color = "White"
+  }
+  //if the uvIndex is greater than 2 then color it yellow
+  if (currentWeather.uvIndex > 2) {
+    uvSpan.style.backgroundColor = "#FFFF00"
+  }
+  //if the uvIndex is greater than 6 then color it red
+  if (currentWeather.uvIndex > 6) {
+    uvSpan.style.backgroundColor = "#FF0000"
+    uvSpan.style.color = "White"
+  }
 }
 
 function updateFiveDayData(data) {
@@ -219,7 +234,7 @@ function updateFiveDayData(data) {
       element.uvIndex = newFiveDay.uvi
       //emoji
       element.emoji = newFiveDay.weather[0].icon
-
+      
     }
   }
 }
@@ -239,7 +254,7 @@ function updateFiveDayDom() {
     element.querySelector(".forecastWind").textContent = "Wind: " + fiveDayForecast[newI].wind + " MPH"
     //update forecastHumidity
     element.querySelector(".forecastHumidity").innerHTML = "Humidity: " + fiveDayForecast[newI].humidity + "&percnt;"
-
+    
     
   }
 
@@ -323,8 +338,6 @@ if (localStorage.getItem("listOfCities")) {
 //setting latLng to first city
 latLng.lat = listOfCities[0].lat;
 latLng.lng = listOfCities[0].lng;
-
-
 
 //when the search button is pressed
 submitBtnEl.addEventListener("click", function(event) {
