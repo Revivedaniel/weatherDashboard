@@ -20,7 +20,15 @@ Functions:
 5. Selection list
 - Click a city you have selected to display that cities weather
 
+Technologies Used:
+1. Moment.js
+2. Bootstrap
+3. OpenWeatherAPI
 
+Languages Used:
+1. HTML5
+2. CSS3
+3. JavaScript
 
 
 
